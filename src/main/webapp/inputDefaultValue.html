@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h4>以下为以post方式提交的表单</h4>
+<form action="/queryPhotos" method="post">
+    <!--        默认上传的数据为null,无论type为number还是text-->
+    编号：<input type="text" name="id"/>
+    作者：<input type="text" name="creditToId"/>
+    日期：<input type="text" name="createDateId"/>
+    国家：<input type="text" name="createCountryId"/>
+    城市：<input type="text" name="createCityId"/>
+    主题：<input type="text" name="themeId"/>
+    人物：<input type="text" name="figureId"/>
+    <br>
+    <button type="submit">查询</button>
+</form>
+<br>
+<h4>以下为以get方式提交的表单</h4>
+<!--    <form action="/queryPhotos/id/creditToId/createDateId/createCountryId/createCityId/themeId/figureId" method="get">-->
+<form action="/queryPhotos" method="get">
+    <!--        默认上传的数据为null,无论type为number还是text-->
+    编号：<input type="text" name="id"/>text
+    作者：<input type="text" name="creditToId"/>
+    日期：<input type="text" name="createDateId"/>
+    国家：<input type="text" name="createCountryId"/>
+    城市：<input type="text" name="createCityId"/>
+    主题：<input type="text" name="themeId"/>
+    人物：<input type="text" name="figureId"/>
+    <br>
+    <button type="submit">查询</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace=绑定一个指定的Dao/Mapper接口-->
+<mapper namespace="com.zhangweijie.mapper.PhotoDataMapper">
+    <!--
+    由于Pojo类PhotoData的data属性与mysql中的photo_data_table的photo_data字段名不一致,需要使用resultMap;
+        <resultMap id="photo_data2data" type="PhotoData">
+            <result property="data" column="photo_data"/>
+        </resultMap>
+        <select id="query" resultType="PhotoData" resultMap="photo_data2data">
+            select * from  `photo_data_table`
+            <where>
+                `id` = #{id}
+            </where>
+        </select>
+
+        <insert id="add" parameterType="PhotoData">
+            insert into `photo_data_table`(`photo_data`) values (#{data})
+        </insert>
+
+        <delete id="delete" parameterType="Long">
+            delete from `photo_data_table`
+            <where>
+                `id` = #{id}
+            </where>
+        </delete>
+
+        <update id="update" parameterType="PhotoData">
+            update `photo_data_table`
+            <set>
+                <if test="data != null">`photo_data` = #{data}</if>
+            </set>
+            <where>
+                <choose>
+                    <when test="id != null">`id` = #{id}</when>
+                    <otherwise>0</otherwise>
+                </choose>
+            </where>
+        </update>
+        -->
+</mapper>

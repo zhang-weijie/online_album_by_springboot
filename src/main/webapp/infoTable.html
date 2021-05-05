@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        body {
+            margin: 0px;
+        }
+
+        .zhezhao {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            /*background: #000;*/
+            background: rgba(0, 0, 0, 0.5);
+            width: 100%;
+            height: 100%;
+            /*opacity: 0.5;*/
+        }
+
+        .tankuang {
+            position: relative;
+            background: #fff;
+            width: 50%;
+            height: 80%;
+            border-radius: 5px;
+            margin: 5% auto;
+        }
+
+        #header {
+            height: 40px;
+        }
+
+        #header-right {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            border-radius: 5px;
+            background: red;
+            color: #fff;
+            right: 5px;
+            top: 5px;
+            text-align: center;
+        }
+
+        .imageDiv {
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+<div>
+    <button style="background-color: aqua"><a href="/index.html">首页</a></button>
+</div>
+<div class="infoTable">
+    <table class="table" border="1" cellpadding="10">
+        <thead id="thead">
+        <tr>
+            <th>
+                编号
+            </th>
+            <th>
+                上传者
+            </th>
+            <th>
+                更新时间
+            </th>
+            <th>
+                拍摄日期
+            </th>
+            <th>
+                国家
+            </th>
+            <th>
+                城市
+            </th>
+            <th>
+                主题
+            </th>
+            <th>
+                人物
+            </th>
+            <th>
+                描述
+            </th>
+            <th>
+                操作
+            </th>
+        </tr>
+        </thead>
+
+        <tbody id="tbody">
+
+        </tbody>
+    </table>
+</div>
+
+<!--以下为弹窗部分-->
+<div class="zhezhao" id='zhezhao'>
+    <div class="tankuang">
+        <div id="header">
+            <span id="photoTitle"></span>
+            <div id="header-right" onclick="hidder()">x</div>
+            <div id="img" class="imageDiv">
+                <img class="image" width="85%" height="85%">
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<!--<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>-->
+<script type="text/javascript" src="jquery-3.5.1.min.js"></script>
+
+<script>
+    //先获取id和name/content的map表,供全局使用
+    let options = {
+        creditTo: {},//{id:name}
+        createDate: {},
+        createCountry: {},
+        createCity: {},
+        theme: {},
+        figure: {},
+    };
+
+    function loadOption() {
+        $.post(
+            "/loadOption",
+            // false,
+            function (data) {
+                let optionMap = JSON.parse(data);
+                console.log(optionMap);
+                //向options中注入后端响应的数据
+                options.creditTo = optionMap.creditTo;
+                options.createDate = optionMap.createDate;
+                options.createCountry = optionMap.createCountry;
+                options.createCity = optionMap.createCity;
+                options.theme = optionMap.theme;
+                options.figure = optionMap.figure;
+
+                console.log("options:");
+                console.log(options);
+
+                //再执行从后台获取检索信息的程序
+                queryMultiInfo();
+            });
+
+    }
+
+    // 声明根据id获取name的方法,其中option如createDate
+    function getNameById(option, id) {
+        return options[option][id];
+    }
+</script>
+<script>
+    //在不使用模板引擎的情况下获得后端ModelAndView传递的参数,
+    //参见：https://blog.csdn.net/qq_41495525/article/details/101343675
+    function getQueryVariable(variable) {
+        let query = window.location.search.substring(1);
+        let lets = query.split("&");
+        for (let i = 0; i < lets.length; i++) {
+            let pair = lets[i].split("=");
+            if (pair[0] == variable) {
+                return decodeURI(pair[1]);
+            } else {
+                return null;
+            }
+        }
+    }
+
+    //通过getQueryVariable获得url中的参数
+    let creditToId = getQueryVariable("creditToId");
+    let createDateId = getQueryVariable("createDateId");
+    let createCountryId = getQueryVariable("createCountryId");
+    let createCityId = getQueryVariable("createCityId");
+    let themeId = getQueryVariable("themeId");
+    let figureId = getQueryVariable("figureId");
+
+
+    function queryMultiInfo() {
+        $.post(
+            "/queryMultiInfo",
+            // false,
+            {
+                creditToId: creditToId,
+                createSDateId: createDateId,
+                createCountryId: createCountryId,
+                createCityId: createCityId,
+                themeId: themeId,
+                figureId: figureId
+            },
+            function (returnData) {
+                let queryResult = JSON.parse(returnData);
+                console.log("queryResult:");
+                console.log(queryResult);
+                let html1 = "";
+
+                for (let i = 0; i < queryResult.length; i++) {
+                    let item = queryResult[i];
+                    //添加新的html;
+                    html1 += "<tr>" +
+                        "<td>" + item.id + "</td>" +
+                        "<td>" + getNameById("creditTo", item.creditToId) + "</td>" +
+                        "<td>" + item.updateTime + "</td>" +
+                        "<td>" + getNameById("createDate", item.createDateId) + "</td>" +
+                        "<td>" + getNameById("createCountry", item.createCountryId) + "</td>" +
+                        "<td>" + getNameById("createCity", item.createCityId) + "</td>" +
+                        "<td>" + getNameById("theme", item.themeId) + "</td>" +
+                        "<td>" + getNameById("figure", item.figureId) + "</td>" +
+                        "<td>" + item.desc + "</td>" +
+                        "<td>" + "<button id='viewBtn_ " + item.id + "' name='" + item.desc + "' onclick='dianwo(this)'>查看</button>" +
+                        // <!--将编辑按钮设置为超链接,在链接的url上写上id等参数,这样就减少一次跟后端的交互-->
+                        "<button id='updateBtn_ " + item.id + "'>" +
+                        "<a href=" +
+                        "'/updatePhoto.html?" +
+                        "id=" + item.id +
+                        "&creditToId=" + item.creditToId +
+                        "&createDateId=" + item.createDateId +
+                        "&createCountryId=" + item.createCountryId +
+                        "&createCityId=" + item.createCityId +
+                        "&themeId=" + item.themeId +
+                        "&figureId=" + item.figureId +
+                        "&desc=" + item.desc +
+                        "'>编辑" + "</a>" +
+                        "</button>" +
+                        "<button id='delBtn_ " + item.id + "' onclick='delPhoto(this)'>删除</button></td>" +
+                        "</tr>";
+                }
+                $("#tbody").html(html1);
+            }
+        );
+    }
+
+    //页面载入时调用ajax获取数据绘制表格
+    $(document).ready(function () {
+        //先执行loadOption获得选项,loadOption()中的ajax请求设置为同步,以免options未填充的情况下就绘制html
+        loadOption();
+
+    })
+</script>
+<!--弹窗部分控制脚本-->
+<script type="text/javascript">
+    document.getElementById('zhezhao').style.display = "none";
+
+    function dianwo(ele) {
+        document.getElementById('zhezhao').style.display = "";
+        //ele即为调用当前函数的Element主体，即id=viewBtn_?的按钮
+        //通过字符串方法获得?的值,传入viewPhoto方法
+        console.log(ele);
+
+        let photoId = ele.id.slice(ele.id.lastIndexOf("_") + 1);
+        let photoDesc = ele.name;
+        console.log(photoId);
+        console.log(photoDesc);
+        document.getElementById("photoTitle").innerText = photoDesc;
+
+        viewPhoto(photoId);
+    }
+
+    function hidder() {
+        document.getElementById('zhezhao').style.display = "none";
+    }
+
+    //利用ajax获取照片数据
+    function viewPhoto(photoId) {
+        $.post(
+            "/viewPhoto",
+            {id: photoId},
+            function (returnData) {
+                // console.log(returnData);
+                returnData = returnData.slice(1, -2);
+                //去掉returnData收尾的引号
+                console.log("returnData:");
+                console.log(returnData);
+
+                //将获取到的returnData写入html标签
+                document.getElementById("img").innerHTML =
+                    "<img id='img' class='image' src='data:image/jpeg;base64," + returnData + "' width='50%'>" +
+                    "<br>" +
+                    "<button style='background-color: lawngreen'><a href='data:image/jpeg;base64," + returnData + "' target='_blank'>点击查看大图</a></button>" +
+                    "<button style='background-color: aqua'><a href='" + URL.createObjectURL(base64ToBlob("data:image/jpeg;base64," + returnData)) + "' download='" + photoId + ".jpg'>下载</a></button>";
+            }
+        );
+    }
+</script>
+<!--下载和删除控制脚本-->
+<script>
+    //考虑到文件传输时采用的是二进制数组+Base64编码的方式，服务器上没有本地文件
+    //因此在下载时通过前端调用后台view()将Base64编码传到前端,然后在前端完成下载即可;
+    //base64转blob
+    function base64ToBlob(code) {
+        let parts = code.split(';base64,');
+        let contentType = parts[0].split(':')[1];
+        // let raw = window.atob(parts[1]);
+        //以上的方法有问题,参见：https://blog.csdn.net/u013189824/article/details/104053452
+        // let raw = decodeURIComponent(escape(window.atob((parts[1]).replace(/-/g, "+").replace(/_/g, "/"))));
+        //测试之后似乎不行,还是改用原先的方法;
+        let raw = window.atob(parts[1]);
+        let rawLength = raw.length;
+
+        let uInt8Array = new Uint8Array(rawLength);
+
+        for (let i = 0; i < rawLength; ++i) {
+            uInt8Array[i] = raw.charCodeAt(i);
+        }
+        return new Blob([uInt8Array], {type: contentType});
+    }
+</script>
+<!--删除数据库中的照片,并更新infoTable.html页面-->
+<script>
+    function delPhoto(ele) {
+        let r = window.confirm("确定要删除吗？");
+        if (r == true) {
+            let photoId = ele.id.slice(ele.id.lastIndexOf("_") + 1);
+            console.log("photoId:");
+            console.log(photoId);
+            $.post(
+                "/deletePhoto",
+                {id: photoId},
+                //经测试,后台必须有response.getWriter.write()才会执行以下方法
+                function () {
+                    location.reload();
+                }
+            );
+        }
+    }
+</script>
+</html>

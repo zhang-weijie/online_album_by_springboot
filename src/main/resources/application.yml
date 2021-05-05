@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    username: root
+    password: 166414
+    url: jdbc:mysql://localhost:3306/master_slave_replication_db?serverTimezone=GMT&useSSL=true&useUnicode=true&characterEncoding=UTF-8&rewriteBatchedStatement=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      auto-commit: true
+  #  实现文件上传时弃用Spring默认的StandardServletMultipartResolver,改用commons-fileupload依赖的CommonsMultipartResolver
+  #  需要导入commons-fileupload依赖,并在config中配置MultipartResolver
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration
+
+  #  配置redis远程连接
+  redis:
+    host: 192.168.198.10
+
+  #  配置视图解析器
+  mvc:
+    view:
+      prefix: /
+      suffix: .html
+#    static-path-pattern: /static/**
+
+mybatis:
+  type-aliases-package: com.zhangweijie.pojo
+  mapper-locations: classpath:mybatis/*.xml
+  configuration:
+    map-underscore-to-camel-case: true

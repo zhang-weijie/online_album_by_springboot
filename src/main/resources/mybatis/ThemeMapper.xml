@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace=绑定一个指定的Dao/Mapper接口-->
+<mapper namespace="com.zhangweijie.mapper.ThemeMapper">
+
+    <select id="queryAll" resultType="Theme">
+        select `id`, `name` from `theme_table`
+    </select>
+
+    <select id="query" resultType="Theme">
+        select `id`, `name` from `theme_table`
+        <where>
+            `id` = #{id}
+        </where>
+    </select>
+
+    <!--    此处未指定返回值类型,但实际上会返回-->
+    <insert id="add" parameterType="Theme">
+        <if test="name != null">
+            insert into `theme_table`(`name`) values (#{name})
+        </if>
+    </insert>
+
+    <!--    此处未指定返回值类型,但实际上会返回-->
+    <delete id="delete" parameterType="Long">
+        delete from `theme_table`
+        <where>
+            `id` = #{id}
+        </where>
+    </delete>
+
+    <!--    此处未指定返回值类型,但实际上会返回-->
+    <!--    parameterType如果是一个java实体类，则其属性可以直接取出-->
+    <update id="update" parameterType="Theme">
+        update `theme_table`
+        <set>
+            <if test="name != null">`name` = #{name}</if>
+        </set>
+        <where>
+            `id` = #{id}
+        </where>
+    </update>
+
+</mapper>
