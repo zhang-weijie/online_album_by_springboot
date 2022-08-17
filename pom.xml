@@ -60,28 +60,28 @@
             <scope>test</scope>
         </dependency>
 
-        <!--        文件上传-->
+        <!--        file upload-->
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
             <version>1.4</version>
         </dependency>
 
-        <!--        处理json-->
+        <!--        json-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.75</version>
         </dependency>
 
-        <!--        aop面向切面编程-->
+        <!--        aop-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
     </dependencies>
 
-    <!--在build中配置resources，来防止我们资源导出失败的问题-->
+    <!--This is to ensure the inclusion of needed config-files when building-->
     <build>
         <resources>
             <resource>
@@ -105,9 +105,8 @@
             </resource>
 
             <resource>
-                <!-- 指定resources插件处理哪个目录下的资源文件 -->
+                <!-- Specifies the directory where the objects to be processed by the resources plugin are located -->
                 <directory>src/main/webapp</directory>
-                <!--注意此次必须要放在此目录下才能被访问到 -->
                 <targetPath>META-INF/resources</targetPath>
                 <includes>
                     <include>**/**</include>
