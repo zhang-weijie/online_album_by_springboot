@@ -3,9 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!--namespace=绑定一个指定的Dao/Mapper接口-->
 <mapper namespace="com.zhangweijie.mapper.PhotoMapper">
-    <!--    resultType返回的是集合中的元素类型photo，而不是集合本身list-->
     <select id="queryAllInfo" resultType="Photo">
         select
         `id`,`credit_to_id`,`update_time`,`create_date_id`,`create_country_id`,`create_city_id`,`theme_id`,`figure_id`,`desc`
@@ -17,10 +15,6 @@
         `id`,`credit_to_id`,`update_time`,`create_date_id`,`create_country_id`,`create_city_id`,`theme_id`,`figure_id`,`desc`
         from `photo_table`
         <where>
-            -- 注意test="id != null"中的id指的是传入的参数,而非数据库中的字段名
-            -- 需要考虑前端返回的究竟是null,空串"",还是0;经过测试,结论为null
-            <!--            <if test="id != null">`id` = #{id}</if>-->
-            -- 虽然MyBatis官网说紧跟着where的and会自动省略,但测试后发现不会,因此用1来占位
             1
             <if test="creditToId != null">and `credit_to_id` = #{creditToId}</if>
             <if test="createDateId != null">and `create_date_id` = #{createDateId}</if>
@@ -51,9 +45,6 @@
         </where>
     </delete>
 
-    <!--sql语句中间不能插入注释!!!-->
-    <!--数组类型的值用xxx != null 判断无效,应当通过长度xxx.length>0来判断-->
-    <!--注意每一条语句结尾的逗号,-->
     <update id="update" parameterType="Photo">
         update `photo_table`
         <set>
