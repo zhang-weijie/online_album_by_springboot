@@ -56,23 +56,23 @@
 </head>
 <body>
 <div class="infoTable">
-    选项：
+    Options：
     <select id="optionId" name="optionName" required>
-        <option disabled selected>---请选择---</option>
-        <option value="creditTo">作者</option>
-        <option value="createDate">日期</option>
-        <option value="createCountry">国家</option>
-        <option value="createCity">城市</option>
-        <option value="theme">主题</option>
-        <option value="figure">人物</option>
+        <option disabled selected>---Please select:---</option>
+        <option value="creditTo">Author</option>
+        <option value="createDate">Date</option>
+        <option value="createCountry">Country</option>
+        <option value="createCity">City</option>
+        <option value="theme">Theme</option>
+        <option value="figure">Figure</option>
     </select>
-    操作：
-    <button name="添加" onclick="addOption()" style="background-color: lawngreen">添加</button>
-    <button name="修改" onclick="updateOption()" style="background-color: yellow">修改</button>
-    <button name="删除" onclick="deleteOption()" style="background-color: red">删除</button>
-    <button><a href="/index.html">首页</a></button>
+    Operations：
+    <button name="add" onclick="addOption()" style="background-color: lawngreen">add</button>
+    <button name="update" onclick="updateOption()" style="background-color: yellow">update</button>
+    <button name="delete" onclick="deleteOption()" style="background-color: red">delete</button>
+    <button><a href="/index.html">Homepage</a></button>
 </div>
-<!--以下为弹窗部分-->
+
 <div class="zhezhao" id='zhezhao'>
     <div class="tankuang">
         <div id="header">
@@ -88,7 +88,6 @@
 <!--jQuery-->
 <!--<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>-->
 <script type="text/javascript" src="jquery-3.5.1.min.js"></script>
-<!--先获取id和name/content的map表,供全局使用-->
 <script>
     let options = {
         creditTo: {},//{id:name,...}
@@ -106,7 +105,6 @@
             function (data) {
                 let optionMap = JSON.parse(data);
                 console.log(optionMap);
-                //向options中注入后端响应的数据
                 options.creditTo = optionMap.creditTo;
                 options.createDate = optionMap.createDate;
                 options.createCountry = optionMap.createCountry;
@@ -122,7 +120,6 @@
 
 
 </script>
-<!--弹窗部分控制脚本-->
 <script type="text/javascript">
     document.getElementById('zhezhao').style.display = "none";
 
@@ -132,102 +129,80 @@
     }
 
     function hidder() {
-        //抹除打开后绘制的html
         document.getElementById("actionExe").innerHTML = "";
         document.getElementById('zhezhao').style.display = "none";
     }
 </script>
-<!--增删改控制脚本-->
 <script>
-    let headHtml = "条目：<select id='optionItem' name='optionItemId'><option disabled selected>---查看/选择---</option>";
+    let headHtml = "OptionItem：<select id='optionItem' name='optionItemId'><option disabled selected>---Show/Select---</option>";
     let tailHtml = "</select>";
 
-    // 声明一个方法用于绘制弹框左半部分信息栏的html
     function createHtml() {
         let tempHtml = headHtml;
-        //1.获取用户要操作的选项类型,如作者(value="creditTo")
+        //1.Get the option that the user wants to operate, such as author (value="creditTo")
         let optionName = $("#optionId").find("option:selected").attr("value");
-        //2.从options对象中获取对应的选项内容map
+        //2.Get the corresponding option-content pair from the options
         let optionItems;//{id:name,...}
         optionItems = options[optionName];
-        //3.将选项内容map注入到tempHtml中
+        //3.Write option-content pairs into tempHtml
         for (let optionItemId in optionItems) {
             tempHtml += "<option value='" + optionItemId + "'>" + optionItems[optionItemId] + "</option>"
         }
-        //4.为tempHtml补上尾巴
+        //4.Add the tail to tempHtml
         tempHtml += tailHtml;
-        //5.返回tempHtml
         return tempHtml;
     }
 
     function addOption() {
-        //1.打开弹框;
         dianwo();
-        //2.绘制弹框的html;
         let tempHtml = createHtml();
-        //注意：日期不同于其他选项,在添加时需要使用日期选择框
         let type = "text";
         if ($("#optionId").find("option:selected").attr("value") === "createDate") {
             type = "date";
         }
-        //为<select id="optionId" name="optionName" required>添加form属性,
         $("#optionId").attr("form", "form_id");
-        tempHtml += "<form action='/addOption' method='post' id='form_id''>添加：<input type='" + type + "' id='optionItemId' name='optionItemName' required><button type='submit'>提交</button></form>";
+        tempHtml += "<form action='/addOption' method='post' id='form_id''>Add：<input type='" + type + "' id='optionItemId' name='optionItemName' required><button type='submit'>提交</button></form>";
         $("#actionExe").html(tempHtml);
     }
 
     function updateOption() {
-        //1.打开弹框
         dianwo();
-        //2.绘制弹框的html;
         let tempHtml = createHtml();
-        //注意：日期不同于其他选项,在添加时需要使用日期选择框
         let type = "text";
         if ($("#optionId").find("option:selected").attr("value") === "createDate") {
             type = "date";
         }
-        //为<select id="optionId" name="optionName" required>添加form属性,
         $("#optionId").attr("form", "form_id");
-        tempHtml += "<form action='/updateOption' method='post' id='form_id''>更新：<input type='" + type + "' id='optionItemId' name='optionItemName' required><button type='submit'>提交</button></form>";
+        tempHtml += "<form action='/updateOption' method='post' id='form_id''>Update：<input type='" + type + "' id='optionItemId' name='optionItemName' required><button type='submit'>提交</button></form>";
         $("#actionExe").html(tempHtml);
 
-        //!!!与添加不同,更新时要求选择/查看栏必须有选中项
         $("#optionItem").attr("required", "required");
-        //!!!与添加不同,还要传入optionItemId,这样后台才能在数据库中查找
-        //由于<select id='optionItem'>的<option value=optionItemId>,因此只需为<select>指定一个form即可
+        //!!! Unlike add, optionItemId also needs to be specified here so that it can be looked up in the database
         $("#optionItem").attr("form", "form_id");
     }
 
     function deleteOption() {
-        //1.打开弹框;
         dianwo();
-        //2.绘制弹框的html;
         let tempHtml = createHtml();
-        //注意：日期不同于其他选项,在添加时需要使用日期选择框
         let type = "text";
         if ($("#optionId").find("option:selected").attr("value") === "createDate") {
             type = "date";
         }
-        //为<select id="optionId" name="optionName" required>添加form属性,
         $("#optionId").attr("form", "form_id");
-        tempHtml += "<form action='/deleteOption' method='post' id='form_id''><button type='submit'>删除</button></form>";
+        tempHtml += "<form action='/deleteOption' method='post' id='form_id''><button type='submit'>Delete</button></form>";
         $("#actionExe").html(tempHtml);
 
-        //!!!与添加不同,删除时要求选择/查看栏必须有选中项
         $("#optionItem").attr("required", "required");
-        //!!!与添加不同,只需传入optionItemId,这样后台才能在数据库中查找
-        //由于<select id='optionItem'>的<option value=optionItemId>,因此只需为<select>指定一个form即可
         $("#optionItem").attr("form", "form_id");
     }
 
-    //以下弃用,因为标签<input type='" + type + "' id='optionItemId' name='optionItemName' required>中的value只有form表单能够获取
-    //创建三个ajax方法用于实现增、改、删时对后台redis.hash和数据库的更新
+    //The following is deprecated, because the value in the tag <input type='" + type + "' id='optionItemId' name='optionItemName' required> can only be obtained by the form
+    <--
+    //Create three ajax methods to update the redis.hash and database when adding, updating, and deleting
     function addAjax() {
-        console.log("调用了addAjax()");
-        //1.获取用于要添加的选项类型和值
+        console.log("func addAjax() called");
         let optionName = $("#optionId").find("option:selected").attr("value");
         let optionItemName = $("#optionItemId").attr("value");
-        //2.判断用户输入的新optionItemName是否已经存在
         let exist = false;
         console.log(optionName);
         console.log(optionItemName);
@@ -238,16 +213,14 @@
                 break;
             }
         }
-        //3.存在则提示，否则联络后台
         if (exist) {
-            alert("添加失败,该条目已存在!")
+            alert("Add failed, the entry already exists!")
         } else {
             $.post(
                 "/addOption",
                 {optionName: optionName, optionItemName: optionItemName},
-                //经测试,后台必须有response.getWriter.write()才会执行以下方法
                 function () {
-                    //更新options:向其中添加新增的optionItemName
+                    //Update options: add new optionItemName to it
                     loadOption();
                 }
             );
@@ -261,5 +234,6 @@
     function deleteAjax() {
 
     }
+    -->
 </script>
 </html>
