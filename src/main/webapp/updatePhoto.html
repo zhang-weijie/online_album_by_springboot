@@ -21,41 +21,41 @@
 <div class="queryTable">
     <form action="/updatePhoto" method="post" enctype="multipart/form-data">
         <input type="text" id="id" name="id" hidden>
-        作者：
+        Author：
         <select id="creditTo" name="creditToId">
 
         </select>
-        日期：
+        Date：
         <select id="createDate" name="createDateId">
 
         </select>
-        国家：
+        Country：
         <select id="createCountry" name="createCountryId">
 
         </select>
-        城市：
+        City：
         <select id="createCity" name="createCityId">
 
         </select>
-        主题：
+        Theme：
         <select id="theme" name="themeId">
 
         </select>
-        人物：
+        Figure：
         <select id="figure" name="figureId">
 
         </select>
-        描述：
+        Description：
         <input type="text" name="desc" id="descId">
         <br>
         <br>
         <br>
         <div class="btn">
-            选择照片：
+            Select a photo：
             <input type="file" name="file">
-            <input type="submit" value="上传" style="background-color: lawngreen" onclick="addSuccess()">
-            <button onclick="back()" style="background-color: deepskyblue">返回</button>
-            <button style="background-color: aqua"><a href="/index.html">首页</a></button>
+            <input type="submit" value="upload" style="background-color: lawngreen" onclick="addSuccess()">
+            <button onclick="back()" style="background-color: deepskyblue">back</button>
+            <button style="background-color: aqua"><a href="/index.html">homepage</a></button>
         </div>
     </form>
 </div>
@@ -64,15 +64,9 @@
 <!--<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>-->
 <script type="text/javascript" src="jquery-3.5.1.min.js"></script>
 <script>
-    //在不使用模板引擎的情况下获得后端ModelAndView传递的参数,
-    //参见：https://blog.csdn.net/qq_41495525/article/details/101343675
     function getQueryVariable(variable) {
         let query = window.location.search.substring(1);
-        // console.log("query:");
-        // console.log(query);
         let lets = query.split("&");
-        // console.log("lets:");
-        // console.log(lets);
         for (let i = 0; i < lets.length; i++) {
             let pair = lets[i].split("=");
             console.log("pair:");
@@ -84,33 +78,23 @@
         return null;
     }
 
-    //加载页面时填充选项栏
     function loadOption(variables) {
         $.post(
             "/loadOption",
 
             function (returnData) {
                 let optionMap = JSON.parse(returnData);
-                // console.log(optionMap);
-                // console.log(optionMap.creditTo);
-                // console.log(optionMap.creditTo[1]);
-                //调用initializeOption
                 initializeOption(optionMap, variables);
             });
     }
 
     function initializeOption(optionMap, variables) {
 
-        //向query中注入<option></option>
         for (let itemKey in optionMap) {
             let itemVal = optionMap[itemKey];
             let tmpHtml = "";
             for (let subItemKey in itemVal) {
                 let subItemVal = itemVal[subItemKey];
-                // console.log(subItemVal);
-                // console.log("variables[itemKey.slice(1,-2)]:");
-                // console.log(itemKey);
-                // console.log(variables[itemKey + "Id"]);
                 if (subItemKey === variables[itemKey + "Id"]) {
                     tmpHtml += "<option selected value='" + subItemKey + "'>" + subItemVal + "</option>"
                 } else {
@@ -122,7 +106,6 @@
     }
 
 </script>
-<!--从url中获取id,然后通过ajax从后端获取-->
 <script>
     let variables = {
         creditToId: null,
@@ -133,7 +116,6 @@
         figureId: null,
     }
 
-    //通过ajax获取此id对应的数据并注入到photoInfo中
     $(document).ready(function () {
         variables.creditToId = getQueryVariable("creditToId");
         variables.createDateId = getQueryVariable("createDateId");
@@ -141,8 +123,6 @@
         variables.createCountryId = getQueryVariable("createCountryId");
         variables.themeId = getQueryVariable("themeId");
         variables.figureId = getQueryVariable("figureId");
-        // console.log("variables:");
-        // console.log(variables);
 
         loadOption(variables);
 
@@ -156,11 +136,10 @@
 </script>
 <script>
     function addSuccess() {
-        alert("添加成功！");
+        alert("Successfully added！");
     }
 
     function back() {
-        //回退
         window.history.back();
     }
 </script>
