@@ -6,16 +6,15 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       auto-commit: true
-  #  实现文件上传时弃用Spring默认的StandardServletMultipartResolver,改用commons-fileupload依赖的CommonsMultipartResolver
-  #  需要导入commons-fileupload依赖,并在config中配置MultipartResolver
+  #  When implementing file upload, do not use Spring's default StandardServletMultipartResolver, instead use CommonsMultipartResolver that commons-fileupload depends on
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration
 
-  #  配置redis远程连接
+  #  Configure redis remote connection
   redis:
     host: 192.168.198.10
 
-  #  配置视图解析器
+  #  Configure view resolvers
   mvc:
     view:
       prefix: /
