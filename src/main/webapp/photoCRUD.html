@@ -6,86 +6,82 @@
 </head>
 <body>
 <form action="/queryAllInfo" method="get">
-    <button type="submit">查询所有</button>
+    <button type="submit">search all</button>
 </form>
 <br>
 <form action="/queryMultiInfo" method="post">
-    编号：<input type="text" name="id">
-    <button type="submit">查询</button>
+    ID：<input type="text" name="id">
+    <button type="submit">search</button>
 </form>
 <br>
-<h4>以下为以post方式提交的表单</h4>
+<h4>submit using post method</h4>
 <form action="/queryMultiInfo" method="post">
-    <!--        默认上传的数据为null,无论type为number还是text-->
-    编号：<input type="text" name="id"/>
-    作者：<input type="text" name="creditToId"/>
-    日期：<input type="text" name="createDateId"/>
-    国家：<input type="text" name="createCountryId"/>
-    城市：<input type="text" name="createCityId"/>
-    主题：<input type="text" name="themeId"/>
-    人物：<input type="text" name="figureId"/>
+    ID：<input type="text" name="id"/>
+    Author：<input type="text" name="creditToId"/>
+    Date：<input type="text" name="createDateId"/>
+    Country：<input type="text" name="createCountryId"/>
+    City：<input type="text" name="createCityId"/>
+    Theme：<input type="text" name="themeId"/>
+    Figure：<input type="text" name="figureId"/>
     <br>
-    <button type="submit">查询</button>
+    <button type="submit">search</button>
 </form>
 <br>
-<h4>以下为以get方式提交的表单</h4>
+<h4>submit using get method</h4>
 <!--    <form action="/queryPhotos/id/creditToId/createDateId/createCountryId/createCityId/themeId/figureId" method="get">-->
 <form action="/queryMultiInfo" method="get">
-    <!--        默认上传的数据为null,无论type为number还是text-->
-    编号：<input type="text" name="id"/>
-    作者：<input type="text" name="creditToId"/>
-    日期：<input type="text" name="createDateId"/>
-    国家：<input type="text" name="createCountryId"/>
-    城市：<input type="text" name="createCityId"/>
-    主题：<input type="text" name="themeId"/>
-    人物：<input type="text" name="figureId"/>
+    ID：<input type="text" name="id"/>
+    Author：<input type="text" name="creditToId"/>
+    Date：<input type="text" name="createDateId"/>
+    Country：<input type="text" name="createCountryId"/>
+    City：<input type="text" name="createCityId"/>
+    Theme：<input type="text" name="themeId"/>
+    Figure：<input type="text" name="figureId"/>
     <br>
-    <button type="submit">查询</button>
+    <button type="submit">search</button>
 </form>
 <br>
-<h4>添加照片</h4>
+<h4>Add a photo</h4>
 <form action="/addPhoto" method="post" enctype="multipart/form-data">
-    <!--        默认上传的数据为null,无论type为number还是text-->
-    <!--  由于数据库会自增id,故不需要提交id
-            编号：<input type="text" name="id"/>-->
-    作者：<input type="text" name="creditToId"/>
-    日期：<input type="text" name="createDateId"/>
-    国家：<input type="text" name="createCountryId"/>
-    城市：<input type="text" name="createCityId"/>
-    主题：<input type="text" name="themeId"/>
-    人物：<input type="text" name="figureId"/>
-    描述：<input type="text" name="desc"/>
-    上传：<input type="file" name="file"/>
-    <input type="submit" value="添加">
+    <!--  Since the database will automatically increment the id, there is no need to submit the id
+            ID：<input type="text" name="id"/>-->
+    Author：<input type="text" name="creditToId"/>
+    Date：<input type="text" name="createDateId"/>
+    Country：<input type="text" name="createCountryId"/>
+    City：<input type="text" name="createCityId"/>
+    Theme：<input type="text" name="themeId"/>
+    Figure：<input type="text" name="figureId"/>
+    Description：<input type="text" name="desc"/>
+    Upload：<input type="file" name="file"/>
+    <input type="submit" value="add">
 </form>
 
 <br>
-<h4>删除照片</h4>
+<h4>Delete a photo</h4>
 <form action="/deletePhoto" method="post">
-    编号：<input type="text" name="id">
-    <button type="submit">删除</button>
+    ID：<input type="text" name="id">
+    <button type="submit">delete</button>
 </form>
 <br>
 
-<h4>更新照片</h4>
+<h4>Update a photo</h4>
 <form action="/updatePhoto" method="post" enctype="multipart/form-data">
-    <!--        默认上传的数据为null,无论type为number还是text-->
-    编号：<input type="text" name="id"/>
-    作者：<input type="text" name="creditToId"/>
-    日期：<input type="text" name="createDateId"/>
-    国家：<input type="text" name="createCountryId"/>
-    城市：<input type="text" name="createCityId"/>
-    主题：<input type="text" name="themeId"/>
-    人物：<input type="text" name="figureId"/>
-    描述：<input type="text" name="desc"/>
-    上传：<input type="file" name="file"/>
-    <input type="submit" value="更新">
+    ID：<input type="text" name="id"/>
+    Author：<input type="text" name="creditToId"/>
+    Date：<input type="text" name="createDateId"/>
+    Country：<input type="text" name="createCountryId"/>
+    City：<input type="text" name="createCityId"/>
+    Theme：<input type="text" name="themeId"/>
+    Figure：<input type="text" name="figureId"/>
+    Description：<input type="text" name="desc"/>
+    Upload：<input type="file" name="file"/>
+    <input type="submit" value="update">
 </form>
 
-<h4>查看照片</h4>
+<h4>view a photo</h4>
 <form action="/viewPhoto" method="post">
-    编号：<input type="text" name="id"/>
-    <button type="submit">查看</button>
+    ID：<input type="text" name="id"/>
+    <button type="submit">show</button>
 </form>
 
 </body>
