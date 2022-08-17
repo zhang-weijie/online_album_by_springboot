@@ -3,10 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!--namespace=绑定一个指定的Dao/Mapper接口-->
 <mapper namespace="com.zhangweijie.mapper.PhotoDataMapper">
-    <!--
-    由于Pojo类PhotoData的data属性与mysql中的photo_data_table的photo_data字段名不一致,需要使用resultMap;
         <resultMap id="photo_data2data" type="PhotoData">
             <result property="data" column="photo_data"/>
         </resultMap>
@@ -40,5 +37,4 @@
                 </choose>
             </where>
         </update>
-        -->
 </mapper>
