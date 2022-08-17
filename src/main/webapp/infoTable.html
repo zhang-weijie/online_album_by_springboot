@@ -52,41 +52,41 @@
 </head>
 <body>
 <div>
-    <button style="background-color: aqua"><a href="/index.html">首页</a></button>
+    <button style="background-color: aqua"><a href="/index.html">Homepage</a></button>
 </div>
 <div class="infoTable">
     <table class="table" border="1" cellpadding="10">
         <thead id="thead">
         <tr>
             <th>
-                编号
+                ID
             </th>
             <th>
-                上传者
+                Uploaded by
             </th>
             <th>
-                更新时间
+                Upload date
             </th>
             <th>
-                拍摄日期
+                
             </th>
             <th>
-                国家
+                Country
             </th>
             <th>
-                城市
+                City
             </th>
             <th>
-                主题
+                Theme
             </th>
             <th>
-                人物
+                Figure
             </th>
             <th>
-                描述
+                Description
             </th>
             <th>
-                操作
+                Operation
             </th>
         </tr>
         </thead>
@@ -97,7 +97,6 @@
     </table>
 </div>
 
-<!--以下为弹窗部分-->
 <div class="zhezhao" id='zhezhao'>
     <div class="tankuang">
         <div id="header">
@@ -115,7 +114,6 @@
 <script type="text/javascript" src="jquery-3.5.1.min.js"></script>
 
 <script>
-    //先获取id和name/content的map表,供全局使用
     let options = {
         creditTo: {},//{id:name}
         createDate: {},
@@ -132,7 +130,6 @@
             function (data) {
                 let optionMap = JSON.parse(data);
                 console.log(optionMap);
-                //向options中注入后端响应的数据
                 options.creditTo = optionMap.creditTo;
                 options.createDate = optionMap.createDate;
                 options.createCountry = optionMap.createCountry;
@@ -143,20 +140,16 @@
                 console.log("options:");
                 console.log(options);
 
-                //再执行从后台获取检索信息的程序
                 queryMultiInfo();
             });
 
     }
 
-    // 声明根据id获取name的方法,其中option如createDate
     function getNameById(option, id) {
         return options[option][id];
     }
 </script>
 <script>
-    //在不使用模板引擎的情况下获得后端ModelAndView传递的参数,
-    //参见：https://blog.csdn.net/qq_41495525/article/details/101343675
     function getQueryVariable(variable) {
         let query = window.location.search.substring(1);
         let lets = query.split("&");
@@ -170,7 +163,6 @@
         }
     }
 
-    //通过getQueryVariable获得url中的参数
     let creditToId = getQueryVariable("creditToId");
     let createDateId = getQueryVariable("createDateId");
     let createCountryId = getQueryVariable("createCountryId");
@@ -210,8 +202,7 @@
                         "<td>" + getNameById("theme", item.themeId) + "</td>" +
                         "<td>" + getNameById("figure", item.figureId) + "</td>" +
                         "<td>" + item.desc + "</td>" +
-                        "<td>" + "<button id='viewBtn_ " + item.id + "' name='" + item.desc + "' onclick='dianwo(this)'>查看</button>" +
-                        // <!--将编辑按钮设置为超链接,在链接的url上写上id等参数,这样就减少一次跟后端的交互-->
+                        "<td>" + "<button id='viewBtn_ " + item.id + "' name='" + item.desc + "' onclick='dianwo(this)'>Show</button>" +
                         "<button id='updateBtn_ " + item.id + "'>" +
                         "<a href=" +
                         "'/updatePhoto.html?" +
@@ -223,9 +214,9 @@
                         "&themeId=" + item.themeId +
                         "&figureId=" + item.figureId +
                         "&desc=" + item.desc +
-                        "'>编辑" + "</a>" +
+                        "'>Edit" + "</a>" +
                         "</button>" +
-                        "<button id='delBtn_ " + item.id + "' onclick='delPhoto(this)'>删除</button></td>" +
+                        "<button id='delBtn_ " + item.id + "' onclick='delPhoto(this)'>Delete</button></td>" +
                         "</tr>";
                 }
                 $("#tbody").html(html1);
@@ -233,21 +224,16 @@
         );
     }
 
-    //页面载入时调用ajax获取数据绘制表格
     $(document).ready(function () {
-        //先执行loadOption获得选项,loadOption()中的ajax请求设置为同步,以免options未填充的情况下就绘制html
         loadOption();
 
     })
 </script>
-<!--弹窗部分控制脚本-->
 <script type="text/javascript">
     document.getElementById('zhezhao').style.display = "none";
 
     function dianwo(ele) {
         document.getElementById('zhezhao').style.display = "";
-        //ele即为调用当前函数的Element主体，即id=viewBtn_?的按钮
-        //通过字符串方法获得?的值,传入viewPhoto方法
         console.log(ele);
 
         let photoId = ele.id.slice(ele.id.lastIndexOf("_") + 1);
@@ -263,7 +249,7 @@
         document.getElementById('zhezhao').style.display = "none";
     }
 
-    //利用ajax获取照片数据
+    //Get photo data with ajax
     function viewPhoto(photoId) {
         $.post(
             "/viewPhoto",
@@ -271,32 +257,26 @@
             function (returnData) {
                 // console.log(returnData);
                 returnData = returnData.slice(1, -2);
-                //去掉returnData收尾的引号
                 console.log("returnData:");
                 console.log(returnData);
 
-                //将获取到的returnData写入html标签
+                //Write the obtained returnData into the html tag
                 document.getElementById("img").innerHTML =
                     "<img id='img' class='image' src='data:image/jpeg;base64," + returnData + "' width='50%'>" +
                     "<br>" +
-                    "<button style='background-color: lawngreen'><a href='data:image/jpeg;base64," + returnData + "' target='_blank'>点击查看大图</a></button>" +
-                    "<button style='background-color: aqua'><a href='" + URL.createObjectURL(base64ToBlob("data:image/jpeg;base64," + returnData)) + "' download='" + photoId + ".jpg'>下载</a></button>";
+                    "<button style='background-color: lawngreen'><a href='data:image/jpeg;base64," + returnData + "' target='_blank'>Click to see the full photo</a></button>" +
+                    "<button style='background-color: aqua'><a href='" + URL.createObjectURL(base64ToBlob("data:image/jpeg;base64," + returnData)) + "' download='" + photoId + ".jpg'>download</a></button>";
             }
         );
     }
 </script>
-<!--下载和删除控制脚本-->
 <script>
-    //考虑到文件传输时采用的是二进制数组+Base64编码的方式，服务器上没有本地文件
-    //因此在下载时通过前端调用后台view()将Base64编码传到前端,然后在前端完成下载即可;
-    //base64转blob
+    //Considering that the file transfer method is binary array plus Base64 encoding, there is therefore no local file on the server
+    //Therefore, when downloading, call the view() on the background to transfer the with Base64 encoded photo data to the front end, and then complete the download on the front end;
+    //base64 to blob
     function base64ToBlob(code) {
         let parts = code.split(';base64,');
         let contentType = parts[0].split(':')[1];
-        // let raw = window.atob(parts[1]);
-        //以上的方法有问题,参见：https://blog.csdn.net/u013189824/article/details/104053452
-        // let raw = decodeURIComponent(escape(window.atob((parts[1]).replace(/-/g, "+").replace(/_/g, "/"))));
-        //测试之后似乎不行,还是改用原先的方法;
         let raw = window.atob(parts[1]);
         let rawLength = raw.length;
 
@@ -308,10 +288,10 @@
         return new Blob([uInt8Array], {type: contentType});
     }
 </script>
-<!--删除数据库中的照片,并更新infoTable.html页面-->
+<!--Delete the photos in the database and update the infoTable.html page-->
 <script>
     function delPhoto(ele) {
-        let r = window.confirm("确定要删除吗？");
+        let r = window.confirm("Are you sure to delete this photo?");
         if (r == true) {
             let photoId = ele.id.slice(ele.id.lastIndexOf("_") + 1);
             console.log("photoId:");
@@ -319,7 +299,6 @@
             $.post(
                 "/deletePhoto",
                 {id: photoId},
-                //经测试,后台必须有response.getWriter.write()才会执行以下方法
                 function () {
                     location.reload();
                 }
